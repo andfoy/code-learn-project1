@@ -3,4 +3,4 @@
 Ocultar un texto dentro de una imagen sin causar cambios aparentes en la misma.
 
 ### Ejemplo
-La imagen original es de un gato ![cat.bmp](Gato)
+La imagen original es de un gato ![Gato](./cat.bmp)
