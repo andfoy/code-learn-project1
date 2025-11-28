@@ -1,2 +1,6 @@
-# code-learn-project1
-A simple steganography example to hide string chars in a BMP image using bit manipulation 
+# Proyecto 1
+## Objetivo
+Ocultar un texto dentro de una imagen sin causar cambios aparentes en la misma.
+
+### Ejemplo
+La imagen original es de un gato ![cat.bmp](Gato)
