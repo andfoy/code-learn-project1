@@ -52,9 +52,6 @@ int main() {
          * 4. Insertar el bit de la instrucción 2 en el primer bit de pix, reasignando en pix.
          * **/
 
-        mask = mask >> 1;
-        displ--;
-
         pixels[pix_pos] = pix;
         pix_pos++;
         pix_cnt++;
