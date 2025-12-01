@@ -58,18 +58,236 @@ Recordemos que una cadena de texto es una secuencia de carácteres, dónde cada 
 Por cada carácter en la cadena de entrada, "Hola" para este ejemplo, se van a tomar cada uno de los bits de cada uno de los carácteres y se van a introducir en el primer bit de los pixeles de la imagen. De forma gráfica:
 
 ```
-                                                                   
-      H   o   l  a                                                 
-     ┌──┌───┌───┌──┌──┐    ┌────┌────┐────┌────┌────┌────┌───┌──── 
-     │72│111│108│97│0 │    │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W] 
-     └┬─└───└───└──└──┘    └─┬──└────┘────└────└────└────└───└──── 
-      │                      │                                     
- ┌────▼─────┐                │                                     
- │ 01001000 │                │                                     
- └────────▼─┘            ┌───▼────┐                                
-          │              │01010110│                                
-          │              └───────▲┘                                
-          │                      │                                 
-          └──────────────────────┘                                 
-                                                                   
+       H   o   l  a
+      ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+      │72│111│108│97│0│     │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W]│
+      └┬─┴───┴───┴──┴─┘     └──┬─┴────┴────┴────┴────┴────┴───┴────┘
+       │                       │
+       │                   ┌───▼────┐
+       │                   │01010111│
+   ┌───▼────┐              └───────▲┘
+   │01001000│                      │
+   └───────┼┘                      │
+           └───────────────────────┘                                                                   
 ```
+
+A continuación se procede a "limpiar" el primer bit del componente del pixel actual (`R[0]` en este caso), nótese que el valor cambia de 1 a 0.
+
+```
+
+       H   o   l  a
+      ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+      │72│111│108│97│0│     │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W]│
+      └┬─┴───┴───┴──┴─┘     └──┬─┴────┴────┴────┴────┴────┴───┴────┘
+       │                       │
+       │                   ┌───▼────┐
+       │                   │01010110│ Clear bit
+   ┌───▼────┐              └───────▲┘
+   │01001000│                      │
+   └───────┼┘                      │
+           └───────────────────────┘                                                                   
+```
+
+Luego se procede a copiar el valor del bit actual en la cadena en el primer bit del componente. Debido a que el valor es 0, no se nota un cambio aparente.
+
+```
+
+      H   o   l  a
+     ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+     │72│111│108│97│0│     │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W]│
+     └┬─┴───┴───┴──┴─┘     └──┬─┴────┴────┴────┴────┴────┴───┴────┘
+      │                       │
+      │                   ┌───▼────┐
+      │                   │01010110│ Set bit
+  ┌───▼────┐              └───────▲┘
+  │01001000│                      │
+  └───────┼┘                      │
+          └───────────────────────┘
+```
+
+Luego el procedimiento avanza al siguiente bit en la cadena y al siguiente componente del pixel, repitiendo las mismas instrucciones anteriormente descritas.
+
+```
+
+                             Move to next pixel component
+       H   o   l  a
+      ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+      │72│111│108│97│0│     │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W]│
+      └┬─┴───┴───┴──┴─┘     └────┴──┬─┴────┴────┴────┴────┴───┴────┘
+       │                            │
+       │                        ┌───▼────┐
+       │                        │01111111│
+   ┌───▼────┐                   └───────▲┘
+   │01001000│                           │
+   └──────┼─┘                           │
+          └─────────────────────────────┘
+
+    Move to next bit
+```
+
+Comparemos el procedimiento de escritura cuándo el valor a escribir es un 1:
+
+```
+
+                              Move to next pixel component
+        H   o   l  a
+       ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+       │72│111│108│97│0│     │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W]│
+       └┬─┴───┴───┴──┴─┘     └────┴────┴────┴──┬─┴────┴────┴───┴────┘
+        │                                      │
+        │                                  ┌───▼────┐
+        │                                  │10101110│
+    ┌───▼────┐                             └───────▲┘
+    │01001000│                                     │
+    └────┼───┘                                     │
+         └─────────────────────────────────────────┘
+
+     Move to next bit
+```
+
+Se procede a limpiar el bit del componente. No hay cambio aparente debido a que el valor es 0:
+
+```
+
+      H   o   l  a
+     ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+     │72│111│108│97│0│     │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W]│
+     └┬─┴───┴───┴──┴─┘     └────┴────┴────┴──┬─┴────┴────┴───┴────┘
+      │                                      │
+      │                                  ┌───▼────┐
+      │                                  │10101110│ Clear bit
+  ┌───▼────┐                             └───────▲┘
+  │01001000│                                     │
+  └────┼───┘                                     │
+       └─────────────────────────────────────────┘
+```
+
+Luego se procede a escribir el valor del bit actual en la cadena:
+
+```
+
+      H   o   l  a
+     ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+     │72│111│108│97│0│     │R[0]│G[0]│B[0]│R[1]│G[1]│B[1]│...│R[W]│
+     └┬─┴───┴───┴──┴─┘     └────┴────┴────┴──┬─┴────┴────┴───┴────┘
+      │                                      │
+      │                                  ┌───▼────┐
+      │                                  │10101111│ Set bit
+  ┌───▼────┐                             └───────▲┘
+  │01001000│                                     │
+  └────┼───┘                                     │
+       └─────────────────────────────────────────┘
+```
+
+Cuándo el total de bits del caracter actual es procesado por completo, el procedimiento se mueve al siguiente carácter, iniciando en el primer bit nuevamente (nótese que el índice del pixel actual es 8 ahora):
+
+```
+
+                           Repeat procedure for next char
+     H   o   l  a
+    ┌──┬───┬───┬──┬─┐     ┌────┬────┬────┬────┬────┬────┬───┬────┐
+    │72│111│108│97│0│     │... │R[8]│G[8]│B[8]│R[9]│G[9]│...│R[W]│
+    └──┴─┬─┴───┴──┴─┘     └────┴──┬─┴────┴────┴────┴────┴───┴────┘
+         │                        │
+         │                    ┌───▼────┐
+         │                    │11101001│
+     ┌───▼────┐               └───────▲┘
+     │01101111│                       │
+     └───────┼┘                       │
+             └────────────────────────┘
+```
+
+A continuación se presenta una animación parcial del procedimiento a realizar:
+
+https://github.com/user-attachments/assets/98c4ad43-ca76-48f9-9f55-b6226f1b0904
+
+
+### Recap de operaciones a nivel de bits
+Un pequeño recordatorio acerca de como realizar la operación de extacción de bits, "limpiar" un bit dado y finalmente, escribir un bit.
+
+#### ¿Cómo leer un bit en una posición en particular?
+Recordemos la tabla de verdad para el operador AND (`a & b`):
+
+| `a` | `b` | `a & b` |
+|:---:|:----|:-------:|
+| 0   |  0  |    0    |
+| 0   |  1  |    0    |
+| 1   |  0  |    0    |
+| 1   |  1  |    1    |
+
+Cómo es posible observar, la operación AND es verdadera solo si ambas entradas son verdaderas, en los demás casos siembre es falso.
+
+A continuación definamos una máscara binaria como una secuencia de bits que contiene un único 1 en una posición específica y el resto de valores en cero. Las máscaras binarias se pueden emplear para leer un bit en una posición en particular de la siguiente forma. Supongamos que se quiere leer el 3 bit del número 111 (`0x6f`, `01101111`), con este fin, se emplea la máscara binaria 4 (`0x4`, `00000100`)
+
+```
+0x6f →       01101111
+0x04 →       00000100
+0x6f & 0x4 → 00000100 
+```
+
+#### ¿Cómo escribir un bit en una posición en particular?
+Recordemos nuevamente la tabla de verdad para el operador OR (`a | b`)
+
+| `a` | `b` | `a \| b` |
+|:---:|:----|:-------:|
+| 0   |  0  |    0    |
+| 0   |  1  |    1    |
+| 1   |  0  |    1    |
+| 1   |  1  |    1    |
+
+Cómo es posible observar, el operador OR es verdadero siempre y cuándo alguno de sus argumentos sea verdadero. Solo es falso si ambas entradas son falsas.
+
+El operador OR se puede emplear para escribir bits en una posición determinada, siempre y cuándo la posición a escribir sea 0. Por ejemplo, a continuación se emplea la máscara binaria 16 (`0x10`, `00010000`) para escribir un 1 en el número 111 (`0x6f`, `01101111`):
+
+```
+0x6f →        01101111
+0x10 →        00010000
+0x6f & 0x10 → 01111111
+```
+
+#### ¿Cómo limpiar un bit en una posición en específico?
+Finalmente recordemos la tabla de verdad para la negación NOT (`~a`)
+
+| `a` | `~a` |
+|:---:|:----|
+| 0   |  1  |
+| 1   |  0  |
+
+La negación toma cualquier booleano y lo convierte en su contrario, es decir, lo verdadero se vuelve falso y lo falso en verdadero. Empleemos el NOT junto al AND para limpiar un bit en una posición en particular, nuevamente usando el número 111 como ejemplo y la máscara binaria 8 (`0x8`, `00001000`):
+
+```
+ 0x08 →        00001000
+~0x08 →        11110111
+ 0x6f →        01101111
+~0x08 & 0x6f → 01100111 
+```
+
+#### Corrimiento de bits
+Debido a que el proyecto implica escribir el **n-ésimo** (`n = 0, 1, 2, ..., 7`) bit del caracter actual de la cadena, en la **primera** posición del componente del pixel actual, hay que realizar un corrimiento de bits previo a escribir en tal posición. Continuando con nuestro ejemplo del AND en la sección de lectura:
+
+```
+0x6f →       01101111
+0x04 →       00000100
+0x6f & 0x4 → 00000100
+```
+
+El bit a escribir se encuentra en la tercera posición, pero debe ser escrito en la primera posición. Para resolver esto, empleamos el operador de corrimiento de bits a la derecha (`>>`), con el argumento 2 (`>> 2`):
+
+```
+0x6f →              01101111
+0x04 →              00000100
+0x6f & 0x4 →        00000100
+(0x6f & 0x4) >> 2 → 00000001
+```
+
+Para leer la siguiente posición, la máscara binaria debe incrementar en una posición. Para este fin, se emplea el operador de corrimiento de bits a la izquierda (`<<`), con el argumento 1 (`<< 1`):
+
+```
+0x04 →      00000100
+0x04 << 1 → 00001000
+```
+
+Nótese que cada vez que la máscara binaria incrementa, el número de veces que se tiene que desplazar el bit a escribir también incrementa.
+
+
+
