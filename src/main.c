@@ -50,8 +50,10 @@ int main() {
          * 2. Mover ese bit `displ` veces a la derecha para que quede en la primera posición.  
          * 3. Limpiar el primer bit en pix.
          * 4. Insertar el bit de la instrucción 2 en el primer bit de pix, reasignando en pix.
+         * 5. Mover mask una posición a la derecha y decrementar el desplazamiento `displ`
          * **/
 
+         
         pixels[pix_pos] = pix;
         pix_pos++;
         pix_cnt++;
