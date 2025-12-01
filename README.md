@@ -13,7 +13,7 @@ Tras realizar el procedimiento, es posible observar que la imagen no tiene cambi
 ![Gato modificado](./example.bmp)
 
 ## Instrucciones
-El procedimiento a realizar consiste en tomar los bits de cada uno de los carácteres de la cadena ejemplo e ir poniéndolos en el primer bit de cada uno de los pixeles de la imagen por componente.
+El procedimiento a realizar consiste en tomar los bits de cada uno de los carácteres de la cadena ejemplo e ir poniéndolos en el primer bit de cada uno de los pixeles de la imagen por componente. Por favor tener en cuenta la **Nota importante** en la sección de desplazamiento de bits.
 
 ### Glosario
 * bit: un único valor 0/1
@@ -288,6 +288,34 @@ Para leer la siguiente posición, la máscara binaria debe incrementar en una po
 ```
 
 Nótese que cada vez que la máscara binaria incrementa, el número de veces que se tiene que desplazar el bit a escribir también incrementa.
+
+**Nota importante:** También se puede leer en orden descendente, iniciando con una máscara binaria con un uno en la última posición, moviendo el bit a la derecha y disminuyendo el número del desplazamiento para mover el bit a la primera posición. Esta es la versión que se tiene que implementar en el proyecto. 
+
+## Ejecución del proyecto.
+1. Crear una cuenta en github.com
+2. Ir a la página principal del proyecto https://github.com/andfoy/code-learn-project1
+3. Hacer click en el botón verde que dice "<> Code":
+    <img width="1430" height="860" alt="image" src="https://github.com/user-attachments/assets/46530147-7d89-4099-884a-d7f66c5a3e6a" />
+4. Luego hacer click en la pestaña "Codespaces", y luego el botón +
+   <img width="1430" height="860" alt="image" src="https://github.com/user-attachments/assets/9e87f2ac-974f-4250-8d7b-1591342f98f7" />
+5. Una ventana similar a esta debería aparecer:
+   <img width="3247" height="1929" alt="image" src="https://github.com/user-attachments/assets/bfbe1241-2e59-4591-94f2-4ed4ca256bfb" />
+6. En la parte inferior, aparece la terminal del entorno de desarrollo:
+   <img width="2547" height="699" alt="image" src="https://github.com/user-attachments/assets/11b4cf59-ed61-489c-93c5-35df4df8ef36" />
+7. Escribir `mkdir build && cd build`, seguido de Enter (`mkdir` crea una nueva carpeta y `cd` hace que la consola se mueva a esa carpeta):
+8. Escribir `cmake ..`, seguido de Enter, la salida debería ser similar a esta
+    <img width="2547" height="600" alt="image" src="https://github.com/user-attachments/assets/c65ada2c-4988-4749-bc75-0cd4cfd14b0b" />
+9. Escribir `make`, seguido de Enter, debería salir un texto largo que al final dice `[100%]`
+11. Para ejecutar el proyecto, `./project1`:
+    <img width="2547" height="600" alt="image" src="https://github.com/user-attachments/assets/040ee382-faef-4458-93dd-81b335655436" />
+12. Para verificar la correcta ejecución del proyecto: `./decode`, la ejecución correcta debería verse así
+    <img width="2547" height="262" alt="image" src="https://github.com/user-attachments/assets/5283d387-1f32-4aea-9730-fb9f9f4fb483" />
+13. Si se hace click en el panel izquierdo en la carpeta `src` y luego en el archivo `main.c`, se podrá acceder al editor de texto
+
+**Importante!** Cada vez que se realicen cambios en los archivos, siempre toca volver a invocar el comando `make`
+
+
+   
 
 
 
