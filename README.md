@@ -311,6 +311,8 @@ Nótese que cada vez que la máscara binaria incrementa, el número de veces que
 12. Para verificar la correcta ejecución del proyecto: `./decode`, la ejecución correcta debería verse así
     <img width="2547" height="262" alt="image" src="https://github.com/user-attachments/assets/5283d387-1f32-4aea-9730-fb9f9f4fb483" />
 13. Si se hace click en el panel izquierdo en la carpeta `src` y luego en el archivo `main.c`, se podrá acceder al editor de texto
+14. Los cambios deben ser realizados debajo de la sección comentada que inicia con la nota `TAREA`:
+    <img width="2558" height="707" alt="image" src="https://github.com/user-attachments/assets/72c919c6-8b99-486e-940f-7ecb10cabcd3" />
 
 **Importante!** Cada vez que se realicen cambios en los archivos, siempre toca volver a invocar el comando `make`
 
